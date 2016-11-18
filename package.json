@@ -1,0 +1,38 @@
+{
+  "name": "react-battery-manager",
+  "version": "0.0.1",
+  "description": "React Component to track battery status ",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel --presets es2015,stage-0 -d lib/ src/",
+    "prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "react": "^15.3.1"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdennour/react-battery-manager.git"
+  },
+  "keywords": [
+    "battery",
+    "react",
+    "component",
+    "battery-manager",
+    "html5"
+  ],
+  "author": "Abdennour TOUMI <http://abdennoor.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abdennour/react-battery-manager/issues"
+  },
+  "homepage": "https://github.com/abdennour/react-battery-manager#readme"
+}
