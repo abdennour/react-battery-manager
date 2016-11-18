@@ -45,3 +45,27 @@ console.log(this.refs.myCompo.level);
 
 <Battery ref="myCompo" />
 ```
+or you can use `onChange` prop for realtime tracking :
+
+```js
+
+const batteryOnChange = (event) => console.log(event.currentTarget.level);
+
+<Battery onChange={batteryOnChange} />
+```
+
+# All props :
+
+------------------------------
+### 1. ltr
+
+### 2. size
+### 3. width
+### 4. height
+
+### 5. background:
+### 6. color
+### 7. colorOnCharing
+### 8. colorOnCritical
+
+### 9. onChange

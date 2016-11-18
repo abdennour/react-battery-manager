@@ -7,7 +7,8 @@ const PropTypes = {
  background: React.PropTypes.string,
  color: React.PropTypes.string,
  colorOnCharing: React.PropTypes.string,
- colorOnCritical: React.PropTypes.string
+ colorOnCritical: React.PropTypes.string,
+ onChange: React.PropTypes.func
 };
 const DefaultProps = {
  ltr:false,
@@ -33,6 +34,15 @@ class Battery extends React.Component {
 
  get level() {
   return this.state.level;
+ }
+
+ eventHandler() {
+   return (event) => {
+     this.onChange(event.currentTarget);
+     if (typeof this.props.onChange === 'function') {
+       this.props.onChange(event);
+     }
+   };
  }
 
  onChange(battery) {
@@ -61,11 +71,10 @@ class Battery extends React.Component {
   if (typeof navigator.getBattery === 'function') {
    navigator.getBattery().then((battery) => {
     this.onChange(battery);
-    let eventHandler = (event) => this.onChange(event.currentTarget);
-    battery.ondischargingtimechange = eventHandler;
-    battery.onchargingtimechange = eventHandler;
-    battery.onchargingchange = eventHandler;
-    battery.onlevelchange = eventHandler;
+    battery.ondischargingtimechange = this.eventHandler();
+    battery.onchargingtimechange = this.eventHandler();
+    battery.onchargingchange = this.eventHandler();
+    battery.onlevelchange = this.eventHandler();
    });
   }
  }
