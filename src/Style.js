@@ -19,7 +19,8 @@ const api = {
     normal: [72, 24],
     large: [108, 36],
     xlarge: [144, 48],
-    xxlarge: [156, 60]
+    xxlarge: [180, 60],
+    xxxlarge: [216, 72]
    };
    containerWith = sizeMap[props.size][0];
    containerHeight = sizeMap[props.size][1];
@@ -34,9 +35,9 @@ const api = {
   };
  },
  sizeCoeffecient(containerHeight) {
-   let coeff =parseInt(containerHeight / 12);
-   if(!coeff) return 1;
-   return (coeff % 3);
+  let coeff = parseInt(containerHeight / 12);
+  if (!coeff) return 1;
+  return (coeff > 4) ? 4 : coeff;
  },
  getForeground(props, state) {
   if (state.level && state.level < 10) {
@@ -75,7 +76,7 @@ const getStyleByPropsAndState = (props, state) => {
  style.bar.background = api.barBackgroundColor(props, state);
  return style;
 };
-module.exports = function(props, state) {
+const styling = function(props, state) {
 
  var style = getStyleByPropsAndState(props, state);
  return `
@@ -142,3 +143,11 @@ module.exports = function(props, state) {
 `;
 
 };
+styling.sizeEnum = ['small',
+ 'normal',
+ 'large',
+ 'xlarge',
+ 'xxlarge',
+ 'xxxlarge'
+];
+module.exports = styling;

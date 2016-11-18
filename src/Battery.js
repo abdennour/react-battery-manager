@@ -1,7 +1,25 @@
 import React from 'react';
 import Styling from './Style.js';
+
+const PropTypes = {
+ ltr: React.PropTypes.bool,
+ size: React.PropTypes.oneOf(Styling.sizeEnum),
+ background: React.PropTypes.string,
+ color: React.PropTypes.string,
+ colorOnCharing: React.PropTypes.string,
+ colorOnCritical: React.PropTypes.string
+};
+const DefaultProps = {
+ ltr:false,
+ size: 'normal',
+ background: 'transparent',
+ color: 'black',
+ colorOnCharing: 'green',
+ colorOnCritical: 'red'
+};
+
 const Methods = [
- 'onCharging', 'onDisCharging', 'styleDidMount', 'removeCss','styleDidUpdate'
+ 'onChange', 'styleDidMount', 'removeCss', 'styleDidUpdate'
 ];
 class Battery extends React.Component {
  constructor(props) {
@@ -13,16 +31,14 @@ class Battery extends React.Component {
   Methods.forEach((method) => this[method] = this[method].bind(this));
  }
 
- onCharging(event) {
-  this.setState({
-   level: event.target.level * 100,
-   charging: true
-  });
+ get level() {
+  return this.state.level;
  }
- onDisCharging(event) {
+
+ onChange(battery) {
   this.setState({
-   level: event.target.level * 100,
-   charging: false
+   level: battery.level * 100,
+   charging: battery.charging
   });
  }
 
@@ -30,11 +46,10 @@ class Battery extends React.Component {
   this.css = document.createElement("style");
   this.css.type = "text/css";
   this.styleDidUpdate();
-  //this.css.id = `style-react-battery-manager-${this.state.id}`;
   document.querySelector('head').appendChild(this.css);
  }
  styleDidUpdate() {
-  if(this.css)
+  if (this.css)
    this.css.innerHTML = Styling(this.props, this.state);
  }
  removeCss() {
@@ -45,23 +60,23 @@ class Battery extends React.Component {
   this.styleDidMount();
   if (typeof navigator.getBattery === 'function') {
    navigator.getBattery().then((battery) => {
-    this.setState({
-     level: battery.level * 100
-    });
-    battery.ondischargingtimechange = this.onDisCharging;
-    battery.onchargingtimechange = this.onCharging;
+    this.onChange(battery);
+    let eventHandler = (event) => this.onChange(event.currentTarget);
+    battery.ondischargingtimechange = eventHandler;
+    battery.onchargingtimechange = eventHandler;
+    battery.onchargingchange = eventHandler;
+    battery.onlevelchange = eventHandler;
    });
   }
  }
  componentDidUpdate() {
-   this.styleDidUpdate();
+  this.styleDidUpdate();
  }
  componentWillUnmount() {
   this.removeCss();
  }
 
  render() {
-//  this.styleDidUpdate();
   return (
     <div className={"battery_"+this.state.id+((this.state.charging)?" plugged":"")}>
      <div className={"level_"+this.state.id}></div>
@@ -70,13 +85,7 @@ class Battery extends React.Component {
  }
 }
 
-Battery.defaultProps = {
- ltr:true,
- size: 'normal',
- background: 'transparent',
- color: 'black',
- colorOnCharing: 'green',
- colorOnCritical:'red'
-};
+Battery.PropTypes = PropTypes;
+Battery.defaultProps = DefaultProps;
 
-module.exports = Battery;
+export default Battery;
