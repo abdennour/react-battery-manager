@@ -26,15 +26,13 @@ class Battery extends React.Component {
    charging: false
   });
  }
- removeCss() {
 
- }
  addCss() {
   var css = document.createElement("style");
   css.type = "text/css";
   css.innerHTML = Styling(this.props, this.state.id);
   css.id = `style-react-battery-manager-${this.state.id}`;
-  document.body.appendChild(css);
+  document.querySelector('head').appendChild(css);
  }
 
  removeCss() {
@@ -62,12 +60,19 @@ class Battery extends React.Component {
   if (this.props.width && this.props.height) {
    containerWith = this.props.width;
    containerHeight = this.props.height;
+  } else if(this.props.width){
+    containerWith = this.props.width;
+    containerHeight = parseInt(containerWith/3)
+  } else if (this.props.height) {
+    containerHeight = this.props.height;
+    containerWith = 3 * containerHeight;
   } else {
    let sizeMap = {
     small: [36, 12],
-    large: [72, 24],
-    xlarge: [108, 36],
-    xxlarge: [144, 48]
+    normal: [72, 24],
+    large: [108, 36],
+    xlarge: [144, 48],
+    xxlarge: [156, 60]
    };
    containerWith = sizeMap[this.props.size][0];
    containerHeight = sizeMap[this.props.size][1];
@@ -81,7 +86,11 @@ class Battery extends React.Component {
   };
  }
  getForeground() {
-  return (!this.state.charging) ? this.props.foreground : this.props.colorOnCharing;
+  if(this.state.level && this.state.level <10) {
+    return this.props.colorOnCritical;
+  } else {
+    return (!this.state.charging) ? this.props.foreground : this.props.colorOnCharing;
+  }
  }
  getContainerColors() {
   return {
@@ -115,7 +124,8 @@ Battery.defaultProps = {
  size: 'large',
  background: 'white',
  foreground: 'black',
- colorOnCharing: 'green'
+ colorOnCharing: 'green',
+ colorOnCritical:'red'
 };
 
 module.exports = Battery;
