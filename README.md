@@ -1,4 +1,4 @@
-![Battery React](https://raw.githubusercontent.com/abdennour/spl/master/js/react-battery-manager-optimized.gif)
+![Battery React](https://raw.githubusercontent.com/rathath/bucket/master/img/react-battery-manager-optimized.gif)
 
 # Overview :
 Track battery status of device that opens the webpage.
